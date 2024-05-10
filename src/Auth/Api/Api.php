@@ -6,7 +6,7 @@ namespace Ababilitworld\FlexAuthByAbabilitworld\Auth\Api;
 
 defined( 'API_BASE_URL' ) || define('API_BASE_URL','flex-auth-by-ababilitworld');
 
-use Ababilitworld\FlexCoreByAbabilitworld\Core\Library\Util\Api\Firebase\PhpJwtHelper\PhpJwtHelper;
+use Ababilitworld\FlexCoreByAbabilitworld\Core\Library\Util\Api\Firebase\PhpJwtHelper;
 
 if (!class_exists('Ababilitworld\FlexAuthByAbabilitworld\Auth\Api\Api')) 
 {
