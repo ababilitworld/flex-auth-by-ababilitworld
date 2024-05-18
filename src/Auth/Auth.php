@@ -18,6 +18,10 @@
 			 * @var object
 			 */
 			private $wp_error;
+
+			public static $tokenName = 'fabaToken';
+
+			public static $appRootId = 'flex-auth-by-ababilitworld';
 	
 			/**
 			 * Constructor
@@ -48,8 +52,10 @@
             public function enqueue_scripts()
             {
 				wp_enqueue_script( 'flex-auth-by-ababilitworld', PLUGIN_URL . '/dist/bundle.js', [ 'jquery', 'wp-element' ], wp_rand(), true );
-				wp_localize_script( 'flex-auth-by-ababilitworld', 'appLocalizer', [
-					'apiUrl' => home_url( '/wp-json' ),
+				wp_localize_script( 'flex-auth-by-ababilitworld', 'flexAuthByAbabilItWorld', [
+					'apiUrl' => home_url( '/wp-json/flex-auth-by-ababilitworld' ),
+					'tokenName' => self::$tokenName,
+					'appRootId' => self::$appRootId,
 					'nonce' => wp_create_nonce( 'wp_rest' ),
 				] );											
 			}
@@ -78,8 +84,8 @@
 			public function render_page() 
 			{
 				?>
-					<div id="flex-auth-by-ababilitworld-wrap">
-						<div id="flex-auth-by-ababilitworld">
+					<div id="<?php echo esc_attr(self::$appRootId.'-wrap');?>">
+						<div id="<?php echo esc_attr(self::$appRootId);?>">
 
 						</div>
 					</div>

@@ -6,6 +6,7 @@ namespace Ababilitworld\FlexAuthByAbabilitworld\Auth\Api;
 
 defined( 'API_BASE_URL' ) || define('API_BASE_URL','flex-auth-by-ababilitworld');
 
+use Ababilitworld\FlexAuthByAbabilitworld\Auth\Auth;
 use Ababilitworld\FlexCoreByAbabilitworld\Core\Library\Util\Api\Firebase\PhpJwtHelper;
 
 if (!class_exists('Ababilitworld\FlexAuthByAbabilitworld\Auth\Api\Api')) 
@@ -65,11 +66,11 @@ if (!class_exists('Ababilitworld\FlexAuthByAbabilitworld\Auth\Api\Api'))
 
                 $token = PhpJwtHelper::generate_token($data);
 
-                return array('success' => true, 'message' => __('Token Generated Successfully', 'simple-task-manager'), 'data'=>array('stmfsToken'=>$token));
+                return array('success' => true, 'message' => __('Token Generated Successfully', 'flex-auth-by-ababilitworld'), 'data'=>array(Auth::$tokenName=>$token));
             }
             else
             {
-                return array('success' => false, 'message' => new \WP_Error('invalid_credentials', __('Invalid username or password.', 'simple-task-manager')), 'data'=>array('token'=>''));
+                return array('success' => false, 'message' => new \WP_Error('invalid_credentials', __('Invalid username or password.', 'flex-auth-by-ababilitworld')), 'data'=>array(Auth::$tokenName=>''));
             }
         }
 
@@ -77,14 +78,14 @@ if (!class_exists('Ababilitworld\FlexAuthByAbabilitworld\Auth\Api\Api'))
         {
             try 
             {
-                $data = PhpJwtHelper::verify_request_token($request);
+                $data = PhpJwtHelper::verify_request_token(Auth::$tokenName,$request);
                 if($data && !is_string($data)) 
                 {
-                    return array('success' => true, 'message' => __('Token is verified successfully','simple-task-manager'),'data'=>array('verifiedData'=>$data,'isVerified'=>true));
+                    return array('success' => true, 'message' => __('Token is verified successfully','flex-auth-by-ababilitworld'),'data'=>array('verifiedData'=>$data,'isVerified'=>true));
                 }
                 else 
                 {
-                    return array('success' => false, 'message' => __('Token is rejected or not verified !!!','simple-task-manager'),'data'=>array('verifiedData'=>null,'isVerified'=>false));
+                    return array('success' => false, 'message' => __('Token is rejected or not verified !!!','flex-auth-by-ababilitworld'),'data'=>array('verifiedData'=>null,'isVerified'=>false));
                 }
             }
             catch (\Exception $e)
@@ -95,7 +96,7 @@ if (!class_exists('Ababilitworld\FlexAuthByAbabilitworld\Auth\Api\Api'))
 
         public function check_permission($request)
         {
-            $data = PhpJwtHelper::verify_request_token($request);
+            $data = PhpJwtHelper::verify_request_token(Auth::$tokenName,$request);
             if($data && !is_string($data)) 
             {
                 //now apply authorization logic here
@@ -109,7 +110,7 @@ if (!class_exists('Ababilitworld\FlexAuthByAbabilitworld\Auth\Api\Api'))
 
         public function logout($request)
         {
-            $data = PhpJwtHelper::verify_request_token($request);
+            $data = PhpJwtHelper::verify_request_token(Auth::$tokenName,$request);
             if($data && !is_string($data)) 
             {
                 $token = PhpJwtHelper::get_token_from_request($request);
@@ -120,7 +121,7 @@ if (!class_exists('Ababilitworld\FlexAuthByAbabilitworld\Auth\Api\Api'))
                         PhpJwtHelper::force_invalidate_token($token);
                     }
 
-                    return array('success' => true, 'message' => __('Logged out successfully','simple-task-manager'),'data'=>array('isLoggedOut'=>true));
+                    return array('success' => true, 'message' => __('Logged out successfully','flex-auth-by-ababilitworld'),'data'=>array('isLoggedOut'=>true));
 
                 } 
                 catch (\Exception $e) 
@@ -130,7 +131,7 @@ if (!class_exists('Ababilitworld\FlexAuthByAbabilitworld\Auth\Api\Api'))
             }
             else
             {
-                return array('success' => true, 'message' => __('Logged out successfully','simple-task-manager'),'data'=>array('isLoggedOut'=>true));
+                return array('success' => true, 'message' => __('Logged out successfully','flex-auth-by-ababilitworld'),'data'=>array('isLoggedOut'=>true));
             }
         }
 
